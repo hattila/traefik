@@ -1,0 +1,41 @@
+version: "3.4"
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  traefik:
+    image: traefik:2.3.2
+    restart: always
+    command:
+      - --entryPoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --api
+      - --log.level=${LOGLEVEL}
+      - --certificatesResolvers.le.acme.email=${EMAIL}
+      - --certificatesResolvers.le.acme.storage=/var/acme.json
+      - --certificatesResolvers.le.acme.tlschallenge=true
+      - --providers.docker=true
+      - --providers.docker.watch=true
+      - --providers.docker.exposedbydefault=true
+
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.traefik.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.traefik.service=api@internal
+
+      - traefik.http.routers.traefik.middlewares=admin
+      - traefik.http.middlewares.admin.basicauth.users=admin:$$apr1$$DrEyEheV$$619VXx..vVKrXELrUDA3L.
+
+      - traefik.http.routers.traefik.tls.certresolver=le
+      - traefik.http.routers.traefik.entrypoints=${ENTRYPOINT}
+    networks:
+      - traefik
