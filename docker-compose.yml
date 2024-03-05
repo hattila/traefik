@@ -33,7 +33,7 @@ services:
       - traefik.http.routers.traefik.service=api@internal
 
       - traefik.http.routers.traefik.middlewares=admin
-      - traefik.http.middlewares.admin.basicauth.users=admin:$$apr1$$DrEyEheV$$619VXx..vVKrXELrUDA3L.
+      - traefik.http.middlewares.admin.basicauth.users=admin:$$apr1$$mEId9LBE$$IgL4aTk9X79ohVQmk5Qss/
 
       - traefik.http.routers.traefik.tls.certresolver=le
       - traefik.http.routers.traefik.entrypoints=${ENTRYPOINT}
