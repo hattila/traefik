@@ -16,7 +16,8 @@ services:
       - --log.level=${LOGLEVEL}
       - --certificatesResolvers.le.acme.email=${EMAIL}
       - --certificatesResolvers.le.acme.storage=/var/acme.json
-      - --certificatesResolvers.le.acme.tlschallenge=true
+      - --certificatesResolvers.le.acme.dnschallenge=true
+      - --certificatesResolvers.le.acme.httpChallenge.entryPoint=web
       - --providers.docker=true
       - --providers.docker.watch=true
       - --providers.docker.exposedbydefault=true
