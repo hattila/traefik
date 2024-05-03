@@ -1,9 +1,8 @@
-version: "3.4"
 
 networks:
   traefik:
-    external:
-      name: traefik
+    name: traefik
+    external: true
 
 services:
   traefik:
@@ -34,7 +33,7 @@ services:
       - traefik.http.routers.traefik.service=api@internal
 
       - traefik.http.routers.traefik.middlewares=admin
-      - traefik.http.middlewares.admin.basicauth.users=admin:$$apr1$$mEId9LBE$$IgL4aTk9X79ohVQmk5Qss/
+      - traefik.http.middlewares.admin.basicauth.users=admin:${HTTP_BASIC_AUTH_PASSWORD}
 
       - traefik.http.routers.traefik.tls.certresolver=le
       - traefik.http.routers.traefik.entrypoints=${ENTRYPOINT}
